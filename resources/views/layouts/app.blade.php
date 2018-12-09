@@ -98,7 +98,7 @@
                                                 <a href="{{route('projects.create')}}"
                                                    class="list-group-item list-group-item-action {{ Route::is('projects.create') ? ' active' : '' }}">Create
                                                     Project</a>
-                                                <a href="#" class="list-group-item list-group-item-action">Import
+                                                <a href="{{route('import.project.form')}}" class="list-group-item list-group-item-action">Import
                                                     Project</a>
                                                 @if (auth()->user()->isAdmin())
                                                     <a href="{{route('export.project')}}"

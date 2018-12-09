@@ -121,14 +121,33 @@ class ProjectController extends Controller
     {
         $this->projectService->delete($project);
 
-        return  redirect()->route('projects.index')->with('success deleted');
+        return redirect()->route('projects.index')->with('success deleted');
     }
 
-    public function import()
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function importForm()
     {
-        Excel::import(new ProjectsImport, 'project.xls');
+        return view('project.import');
     }
 
+    public function import(Request $request)
+    {
+
+        $file = $request->file;
+        $defaultTypeFile = Project::getTypeFile();
+
+        $file->move(storage_path('app'), 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
+
+        //unlink(public_path('/img/photo_product/'.$product->image));
+
+        Excel::import(new ProjectsImport, 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function export()
     {
         return Excel::download(new ProjectsExport, 'projects.xls');

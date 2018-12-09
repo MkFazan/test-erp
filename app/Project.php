@@ -12,6 +12,9 @@ class Project extends Model
     public const BLOG = 'blog';
     public const OTHER = 'other';
 
+    public const EXCEL = 'xls';
+    public const CSV = 'csv';
+
     /**
      * @return array
      */
@@ -22,6 +25,17 @@ class Project extends Model
             self::BOOK => 2,
             self::COURSE => 3,
             self::OTHER => 4,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeFile()
+    {
+        return [
+            1 => self::EXCEL,
+            2 => self::CSV ,
         ];
     }
 

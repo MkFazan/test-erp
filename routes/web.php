@@ -18,6 +18,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('projects', 'ProjectController');
     Route::get('/export', 'ProjectController@export')->name('export.project');
+    Route::get('/import', 'ProjectController@importForm')->name('import.project.form');
+    Route::post('/import-file', 'ProjectController@import')->name('import.project.file');
 
 });
 
