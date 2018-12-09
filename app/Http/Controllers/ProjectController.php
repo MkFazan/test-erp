@@ -45,7 +45,7 @@ class ProjectController extends Controller
     public function index()
     {
         return view('project.index', [
-            'projects' => $this->projectRepository->getProjects()
+            'projects' => $this->projectRepository->getProjects(config('app.pagination_limit'))
         ]);
     }
 
@@ -133,6 +133,10 @@ class ProjectController extends Controller
         return view('project.import');
     }
 
+    /**
+     * @param ImportRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function import(ImportRequest $request)
     {
         $file = $request->file;

@@ -3,7 +3,7 @@
 return [
 
     'max_size_file' => env('MAX_SIZE_FILE', 50000000000),
-    'pagination_limit' => env('PAGINATION_LIMIT', 10),
+    'pagination_limit' => env('PAGINATION_LIMIT', 3),
     /*
     |--------------------------------------------------------------------------
     | Application Name

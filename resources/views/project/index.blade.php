@@ -59,6 +59,11 @@
                 @endif
                 </tbody>
             </table>
+            <div>
+                @if($projects->hasPages())
+                    {{$projects->links()}}
+                @endif
+            </div>
         </div>
     </div>
 @endsection
