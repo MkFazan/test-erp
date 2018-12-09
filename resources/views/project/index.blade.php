@@ -2,6 +2,26 @@
 
 @section('content')
     <div class="card">
+        <div class="card-header">Search for title</div>
+        <div class="card-body">
+            <form method="post" action="{{route('search.project.type')}}">
+                @csrf
+                <input type="text" name="q" placeholder="search for type project">
+                <input type="submit" value="Search">
+            </form>
+            <form method="post" action="{{route('search.project.title')}}">
+                @csrf
+                <input type="text" name="q" placeholder="search for title project">
+                <input type="submit" value="Search">
+            </form>
+            <form method="post" action="{{route('search.project.organization')}}">
+                @csrf
+                <input type="text" name="q" placeholder="search for organization project">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+    </div>
+    <div class="card">
         <div class="card-header">Projects</div>
         <div class="card-body">
             <table class="table table-hover">

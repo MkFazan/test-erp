@@ -3,9 +3,11 @@
 namespace App\Services;
 
 
+use App\Imports\ProjectsImport;
 use App\Project;
 use App\Repositories\ProjectRepository;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService
 {
@@ -111,5 +113,50 @@ class ProjectService
 
             return ['error' => $e];
         }
+    }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectTitle($data)
+    {
+        return $this->projectRepository->searchProjectForTitle($data);
+    }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectOrganization($data)
+    {
+        return $this->projectRepository->searchProjectForOrganization($data);
+    }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectType($data)
+    {
+        return $this->projectRepository->searchProjectForType($data);
+    }
+
+    /**
+     * @param $file
+     */
+    public function importFile($file)
+    {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        if ($finfo->file($file) == 'application/vnd.ms-excel') {
+            $defaultTypeFile = Project::EXCEL;
+        } else {
+            $defaultTypeFile = Project::CSV;
+        }
+
+        //$defaultTypeFile = Project::getTypeFile();
+        $file->move(storage_path('app'), 'temporary_name' . '.' . $defaultTypeFile);
+        Excel::import(new ProjectsImport, 'temporary_name' . '.' . $defaultTypeFile);
+        unlink(storage_path('app/temporary_name' . '.' . $defaultTypeFile));
     }
 }

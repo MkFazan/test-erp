@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Project;
 use App\ProjectSkill;
+use App\ProjectType;
 use App\Skill;
 
 class ProjectRepository
@@ -89,4 +90,43 @@ class ProjectRepository
             ->whereIn('skill_id', $data)
             ->delete();
     }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectForTitle($data)
+    {
+        return Project::with('skill', 'user', 'type')
+            ->where('title', 'like', '%' . $data . '%')
+            ->paginate(config('app.pagination_limit'));
+    }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectForOrganization($data)
+    {
+        return Project::with('skill', 'user', 'type')
+            ->where('organization', 'like', '%' . $data . '%')
+            ->paginate(config('app.pagination_limit'));
+    }
+
+    /**
+     * @param $data
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchProjectForType($data)
+    {
+        return Project::with('skill', 'user', 'type')
+            ->join('project_types', 'projects.type_id', 'project_types.id')
+            ->where('project_types.title', 'like', '%' . $data . '%')
+            ->select(['*',
+                'projects.id as id',
+                'projects.title as title',
+            ])
+            ->paginate(config('app.pagination_limit'));
+    }
+
 }

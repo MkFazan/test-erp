@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\ProjectsExport;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreProjectRequest;
-use App\Imports\ProjectsImport;
 use App\Project;
 use App\Repositories\ProjectRepository;
 use App\Services\ProjectService;
@@ -139,19 +138,7 @@ class ProjectController extends Controller
      */
     public function import(ImportRequest $request)
     {
-        $file = $request->file;
-
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        if ($finfo->file($file) == 'application/vnd.ms-excel'){
-            $defaultTypeFile = Project::EXCEL;
-        }else{
-            $defaultTypeFile = Project::CSV;
-        }
-
-        //$defaultTypeFile = Project::getTypeFile();
-        $file->move(storage_path('app'), 'temporary_name' . '.'.$defaultTypeFile);
-        Excel::import(new ProjectsImport, 'temporary_name' . '.'.$defaultTypeFile);
-        unlink(storage_path('app/temporary_name'. '.'.$defaultTypeFile));
+        $this->projectService->importFile($request->file);
 
         return redirect()->route('projects.index')->with('success import file');
     }
@@ -170,6 +157,39 @@ class ProjectController extends Controller
     public function exportCsv()
     {
         return Excel::download(new ProjectsExport, 'projects.csv');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function searchProjectInType(Request $request)
+    {
+        return view('project.index', [
+            'projects' => $this->projectService->searchProjectType($request->q)
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function searchProjectInOrganization(Request $request)
+    {
+        return view('project.index', [
+            'projects' => $this->projectService->searchProjectOrganization($request->q)
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function searchProjectInTitle(Request $request)
+    {
+        return view('project.index', [
+            'projects' => $this->projectService->searchProjectTitle($request->q)
+        ]);
     }
 
 }

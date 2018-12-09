@@ -22,5 +22,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/import', 'ProjectController@importForm')->name('import.project.form');
     Route::post('/import-file', 'ProjectController@import')->name('import.project.file');
 
+    Route::post('/search-type', 'ProjectController@searchProjectInType')->name('search.project.type');
+    Route::post('/search-title', 'ProjectController@searchProjectInTitle')->name('search.project.title');
+    Route::post('/search-organization', 'ProjectController@searchProjectInOrganization')->name('search.project.organization');
+
 });
 
