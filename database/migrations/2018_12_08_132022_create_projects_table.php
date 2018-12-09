@@ -23,7 +23,6 @@ class CreateProjectsTable extends Migration
             $table->timestamp('end')->nullable()->default(null);
             $table->string('role', 255);
             $table->string('link', 255)->nullable()->default(null);
-            $table->smallInteger('skill_id')->nullable()->default(null);
             $table->smallInteger('type_id');
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 use App\Project;
 use App\ProjectType;
 use App\Role;
+use App\Skill;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -35,6 +36,12 @@ class DefaultSettingSeeder extends Seeder
         foreach (Project::getType() as $type => $id){
             ProjectType::create([
                'title' => $type
+            ]);
+        }
+
+        foreach (Skill::getDefaultSkills() as $skill => $id){
+            Skill::create([
+                'title' => $skill
             ]);
         }
 

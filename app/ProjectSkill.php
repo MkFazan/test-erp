@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectSkill extends Model
 {
-    protected $timestamps = false;
-    protected $incrementing = false;
+    public $timestamps = false;
+    public $incrementing = false;
+
+    protected $fillable = [
+        'project_id',
+        'skill_id',
+        ];
 }

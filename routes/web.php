@@ -17,5 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'ProjectController@index')->name('home');
 
     Route::resource('projects', 'ProjectController');
+    Route::get('/export', 'ProjectController@export')->name('export.project');
+
 });
 
