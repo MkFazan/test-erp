@@ -31,6 +31,10 @@ class ProjectService
         $this->projectRepository = $projectRepository;
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     public function createProject($data)
     {
         $data['user_id'] = auth()->id();
@@ -56,6 +60,11 @@ class ProjectService
         }
     }
 
+    /**
+     * @param $data
+     * @param Project $project
+     * @return array
+     */
     public function updateProject($data, Project $project)
     {
         try {
@@ -85,6 +94,28 @@ class ProjectService
             }
         } catch (\Throwable  $e) {
             DB::rollback();
+            return ['error' => $e];
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @return array
+     */
+    public function delete(Project $project)
+    {
+        try {
+            DB::beginTransaction();
+            $project = $project->load('skill');
+            $skillOld = $project->skill->pluck('id')->toArray();
+            $this->projectRepository->deleteSkill($skillOld, $project);
+            $project->delete();
+            DB::commit();
+
+            return ['success' => $project];
+        } catch (\Throwable  $e) {
+            DB::rollback();
+
             return ['error' => $e];
         }
     }

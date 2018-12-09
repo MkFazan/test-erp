@@ -74,13 +74,11 @@ class ProjectRepository
     public function getProjects($paginate = false)
     {
         if ($paginate) {
-            return Project::with('skill', 'user')
-                ->where('user_id', auth()->user()->id)
+            return Project::with('skill', 'user', 'type')
                 ->orderBy('created_at', 'desc')
                 ->paginate($paginate);
         } else {
-            return Project::with('skill', 'user')
-                ->where('user_id', auth()->user()->id)
+            return Project::with('skill', 'user', 'type')
                 ->orderBy('created_at', 'desc')
                 ->get();
         }

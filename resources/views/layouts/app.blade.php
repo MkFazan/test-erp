@@ -100,9 +100,11 @@
                                                     Project</a>
                                                 <a href="#" class="list-group-item list-group-item-action">Import
                                                     Project</a>
-                                                <a href="{{route('export.project')}}"
-                                                   class="list-group-item list-group-item-action">Export all
-                                                    Projects</a>
+                                                @if (auth()->user()->isAdmin())
+                                                    <a href="{{route('export.project')}}"
+                                                       class="list-group-item list-group-item-action">Export all
+                                                        Projects</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

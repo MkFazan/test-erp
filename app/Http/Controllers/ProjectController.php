@@ -43,7 +43,6 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //dd($this->projectRepository->getProjects());
         return view('project.index', [
             'projects' => $this->projectRepository->getProjects()
         ]);
@@ -76,15 +75,12 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with($return);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Project $project
-     * @return void
-     */
+
     public function show(Project $project)
     {
-        dd('show');
+        return view('project.show', [
+            'project' => $project->load('skill', 'user', 'type')
+        ]);
     }
 
     /**
@@ -116,15 +112,16 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with($return);
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Project $project
-     * @return void
+     * @return mixed
      */
     public function destroy(Project $project)
     {
-        dd('delete');
+        $this->projectService->delete($project);
+
+        return  redirect()->route('projects.index')->with('success deleted');
     }
 
     public function import()
