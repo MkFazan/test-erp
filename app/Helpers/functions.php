@@ -19,16 +19,16 @@ function dateFormat($data)
 function exportProject($projects)
 {
     $head[0] = [
-        'title' => 'Title',
-        'user_id' => 'Author',
-        'description' => 'Description',
-        'organization' => 'Organization',
-        'start' => 'Start',
-        'end' => 'End',
-        'role' => 'Role',
-        'link' => 'Link',
-        'skill_id' => 'Skills',
-        'type_id' => 'Type',
+        'title' => '#Title',
+        'user_id' => '#Author',
+        'description' => '#Description',
+        'organization' => '#Organization',
+        'start' => '#Start',
+        'end' => '#End',
+        'role' => '#Role',
+        'link' => '#Link',
+        'skill_id' => '#Skills',
+        'type_id' => '#Type',
     ];
 
     $data = $projects->map(function ($project, $key) {
@@ -58,13 +58,4 @@ function getProjectTypeId($title)
     $type = Project::getType();
 
     return isset($type[$title]) ? $type[$title] : 4;
-}
-
-/**
- * @param $title
- * @return mixed
- */
-function createSkillForImport($title)
-{
-    return Skill::firstOrCreate(['title' => $title]);
 }

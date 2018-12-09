@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <form id="delete_form_project{{$project->id}}" method="post"
-                                  action="{{route('projects.destroy', ['project' => 1])}}">
+                                  action="{{route('projects.destroy', ['project' => $project->id])}}">
                                 @method('DELETE')
                                 @csrf
                                 <a class="btn btn-danger"

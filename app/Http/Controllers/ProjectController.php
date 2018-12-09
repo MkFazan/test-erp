@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProjectsExport;
+use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Imports\ProjectsImport;
 use App\Project;
@@ -132,13 +133,21 @@ class ProjectController extends Controller
         return view('project.import');
     }
 
-    public function import(Request $request)
+    public function import(ImportRequest $request)
     {
         $file = $request->file;
-        $defaultTypeFile = Project::getTypeFile();
-        $file->move(storage_path('app'), 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
-        Excel::import(new ProjectsImport, 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
-        unlink(storage_path('app/temporary_name'. '.'.$defaultTypeFile[$request->type]));
+
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        if ($finfo->file($file) == 'application/vnd.ms-excel'){
+            $defaultTypeFile = Project::EXCEL;
+        }else{
+            $defaultTypeFile = Project::CSV;
+        }
+
+        //$defaultTypeFile = Project::getTypeFile();
+        $file->move(storage_path('app'), 'temporary_name' . '.'.$defaultTypeFile);
+        Excel::import(new ProjectsImport, 'temporary_name' . '.'.$defaultTypeFile);
+        unlink(storage_path('app/temporary_name'. '.'.$defaultTypeFile));
 
         return redirect()->route('projects.index')->with('success import file');
     }
