@@ -25,8 +25,6 @@ class ImportRequest extends FormRequest
     {
         return [
             'file' => 'required|max:' . config('app.max_size_file'), //TODO: |mimes:xls,csv - error ???
-            'type' => 'required|integer|max:50'
-
         ];
     }
 }
