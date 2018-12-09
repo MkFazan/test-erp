@@ -1,6 +1,7 @@
 <?php
 
 use App\Project;
+use App\Skill;
 
 /**
  * @param $data
@@ -11,6 +12,10 @@ function dateFormat($data)
     return \Carbon\Carbon::parse($data)->format('Y-m-d');
 }
 
+/**
+ * @param $projects
+ * @return \Illuminate\Support\Collection
+ */
 function exportProject($projects)
 {
     $head[0] = [
@@ -27,7 +32,7 @@ function exportProject($projects)
     ];
 
     $data = $projects->map(function ($project, $key) {
-        return  [
+        return [
             'title' => $project->title,
             'user_id' => $project->user->email,
             'description' => $project->description,
@@ -42,4 +47,24 @@ function exportProject($projects)
     });
 
     return collect(array_merge($head, $data->toArray()));
+}
+
+/**
+ * @param $title
+ * @return int
+ */
+function getProjectTypeId($title)
+{
+    $type = Project::getType();
+
+    return isset($type[$title]) ? $type[$title] : 4;
+}
+
+/**
+ * @param $title
+ * @return mixed
+ */
+function createSkillForImport($title)
+{
+    return Skill::firstOrCreate(['title' => $title]);
 }

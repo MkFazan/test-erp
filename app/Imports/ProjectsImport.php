@@ -14,9 +14,8 @@ class ProjectsImport implements ToCollection
         foreach ($rows as $row)
         {
             $type =  getProjectTypeId($row[9]);
-            $skills = $row[8];
-            dd($row);
-            Project::create([
+
+            $project = Project::create([
                 'title' => $row[0],
                 'user_id' => auth()->user()->id,
                 'description' => $row[2],
@@ -25,9 +24,17 @@ class ProjectsImport implements ToCollection
                 'end' => $row[5],
                 'role' => $row[6],
                 'link' => $row[7],
-                'skill_id' => $row[8],
-                'type_id' => $row[2],
+                'type_id' => $type,
             ]);
+
+            foreach (json_decode($row[8]) as $title){
+                $skill = createSkillForImport($title);
+
+                return ProjectSkill::create([
+                    'skill_id' => $skill->id,
+                    'project_id' => $project->id
+                ]);
+            }
         }
     }
 }

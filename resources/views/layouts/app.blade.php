@@ -101,9 +101,12 @@
                                                 <a href="{{route('import.project.form')}}" class="list-group-item list-group-item-action">Import
                                                     Project</a>
                                                 @if (auth()->user()->isAdmin())
-                                                    <a href="{{route('export.project')}}"
+                                                    <a href="{{route('export.project.excel')}}"
                                                        class="list-group-item list-group-item-action">Export all
-                                                        Projects</a>
+                                                        Projects Excel</a>
+                                                    <a href="{{route('export.project.csv')}}"
+                                                       class="list-group-item list-group-item-action">Export all
+                                                        Projects Csv</a>
                                                 @endif
                                             </div>
                                         </div>

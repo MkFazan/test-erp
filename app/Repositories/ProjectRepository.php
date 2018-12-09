@@ -43,9 +43,9 @@ class ProjectRepository
      * @param $title
      * @return mixed
      */
-    public function createSkill($id)
+    public function createSkill($title)
     {
-        return Skill::firstOrCreate(['id' => $id]);
+        return Skill::firstOrCreate(['title' => $title]);
     }
 
     /**

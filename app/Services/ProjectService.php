@@ -39,7 +39,6 @@ class ProjectService
             if (isset($data['skills'])) {
                 if (!empty($data['skills'])) {
                     foreach ($data['skills'] as $skill) {
-                        //$skill = $this->projectRepository->createSkill($skill);
                         $this->projectRepository->saveRelationSkill($project, $skill);
                     }
                 }

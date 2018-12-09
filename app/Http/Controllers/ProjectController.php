@@ -134,23 +134,29 @@ class ProjectController extends Controller
 
     public function import(Request $request)
     {
-
         $file = $request->file;
         $defaultTypeFile = Project::getTypeFile();
-
         $file->move(storage_path('app'), 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
-
-        //unlink(public_path('/img/photo_product/'.$product->image));
-
         Excel::import(new ProjectsImport, 'temporary_name' . '.'.$defaultTypeFile[$request->type]);
+        unlink(storage_path('app/temporary_name'. '.'.$defaultTypeFile[$request->type]));
+
+        return redirect()->route('projects.index')->with('success import file');
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function export()
+    public function exportExcel()
     {
         return Excel::download(new ProjectsExport, 'projects.xls');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportCsv()
+    {
+        return Excel::download(new ProjectsExport, 'projects.csv');
     }
 
 }
