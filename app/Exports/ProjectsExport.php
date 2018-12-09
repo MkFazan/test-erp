@@ -12,6 +12,6 @@ class ProjectsExport implements FromCollection
     */
     public function collection()
     {
-        return Project::all();
+        return exportProject(Project::all());
     }
 }
